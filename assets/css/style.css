@@ -1,0 +1,154 @@
+:root {
+  --background-color: white;
+  /* Light mode background */
+  --text-color: rgb(6, 7, 36);
+  /* Light mode text color */
+  --headerColor: #0c113be5;
+  --headerColor2: #f2c038f5;
+}
+
+/* Define scrollbar styles */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+/* Define scrollbar track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Define scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 6px;
+}
+
+/* Define scrollbar thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+body.dark {
+  --background-color: rgb(6, 7, 36);
+  /* Dark mode background */
+  --text-color: white;
+  /* Dark mode text color */
+}
+body.dark header {
+  background-color: var(--headerColor2);
+}
+body.dark header .logo .logoText {
+  color: rgb(17, 16, 16);
+}
+body.dark .row .heroContent {
+  background-color: transparent;
+}
+body.dark .row .formContent {
+  background-color: transparent;
+  box-shadow: rgba(124, 139, 145, 0.12) 0px 2px 4px 0px, rgba(16, 101, 138, 0.32) 0px 2px 16px 0px;
+}
+body header {
+  background-color: var(--headerColor);
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}
+body header .modeBg {
+  display: flex;
+  background-color: aliceblue;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  padding: 5px;
+  outline: none;
+  border: 0;
+}
+body header .logo .logoText {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+body .row .heroContent {
+  background-color: #e9c63b;
+}
+body .row .heroContent .author a {
+  background-color: whitesmoke;
+  padding: 0.2rem;
+  border-radius: 0.5rem;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+body .row .formContent {
+  background-color: aliceblue;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+body .row .formContent small {
+  color: rgb(255, 94, 0);
+}
+
+/* CSS */
+.button-61 {
+  align-items: center;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border-radius: 4px;
+  border-style: none;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 3px 1px -2px, rgba(0, 0, 0, 0.14) 0 2px 2px 0, rgba(0, 0, 0, 0.12) 0 1px 5px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: Roboto, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  height: 36px;
+  justify-content: center;
+  letter-spacing: 0.0892857em;
+  line-height: normal;
+  min-width: 64px;
+  outline: none;
+  overflow: visible;
+  padding: 0 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  -moz-user-select: none;
+       user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  will-change: transform, opacity;
+}
+
+.button-61:hover {
+  box-shadow: rgba(0, 0, 0, 0.2) 0 2px 4px -1px, rgba(0, 0, 0, 0.14) 0 4px 5px 0, rgba(0, 0, 0, 0.12) 0 1px 10px 0;
+}
+
+.button-61:disabled {
+  background-color: rgba(0, 0, 0, 0.12);
+  box-shadow: rgba(0, 0, 0, 0.2) 0 0 0 0, rgba(0, 0, 0, 0.14) 0 0 0 0, rgba(0, 0, 0, 0.12) 0 0 0 0;
+  color: rgba(0, 0, 0, 0.37);
+  cursor: default;
+  pointer-events: none;
+}
+
+.button-61:not(:disabled) {
+  background-color: #6200ee;
+}
+
+.button-61:focus {
+  box-shadow: rgba(0, 0, 0, 0.2) 0 2px 4px -1px, rgba(0, 0, 0, 0.14) 0 4px 5px 0, rgba(0, 0, 0, 0.12) 0 1px 10px 0;
+}
+
+.button-61:active {
+  box-shadow: rgba(0, 0, 0, 0.2) 0 5px 5px -3px, rgba(0, 0, 0, 0.14) 0 8px 10px 1px, rgba(0, 0, 0, 0.12) 0 3px 14px 2px;
+  background: #A46BF5;
+}/*# sourceMappingURL=style.css.map */

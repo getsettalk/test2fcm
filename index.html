@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test2FCM - Firebase Push Notification Testing Tool</title>
+    <meta name="description"
+        content="Test2FCM is a Firebase push notification testing tool that helps you send custom notifications to multiple devices. Test your notifications with ease.">
+    <meta name="keywords"
+        content="Test2FCM, Firebase, push notification, testing tool, send notifications, custom notifications, fcm, token , fcm token, cloud messagaing">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Test2FCM - Firebase Push Notification Testing Tool">
+    <meta property="og:description"
+        content="Test2FCM is a Firebase push notification testing tool that helps you send custom notifications to multiple devices. Test your notifications with ease.">
+    <!-- Favicon (optional) -->
+    <link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon">
+
+    <!-- Other SEO-related tags (optional) -->
+    <meta name="author" content="Sujeet Kumar">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta property="twitter:title" content="Test2FCM - Firebase Push Notification Testing Tool">
+    <meta property="twitter:description"
+        content="Test2FCM is a Firebase push notification testing tool that helps you send custom notifications to multiple devices. Test your notifications with ease.">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/style.css">
+
+</head>
+
+<body :class="{ dark: isDarkMode }">
+    <div id="app">
+        <header class="d-flex justify-content-between align-items-center">
+            <div class="logo">
+                <img src="./assets/images/logo.png" alt="Logo" class="img-fluid" width="50">
+                <span class="logoText">Test2FCM</span>
+            </div>
+            <button class="modeBg" @click.prevent="toggleDarkMode">
+                <img :src="isDarkMode ? './assets/images/sun.svg' : './assets/images/moon.svg'" alt="mode"
+                    class="img-fluid">
+            </button>
+        </header>
+        <div class="container-fluid ">
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 heroContent pb-5">
+                    <img src="photo.svg" alt="Firebase Fcm" class="img-fluid">
+                    <h1 class="m-0">Test Your Firebase Push Notifications</h1>
+                    <p class="p-0 m-0">Fully Customization ...</p>
+                    <p class="fw-bold" style=" text-shadow: 2px 2px 4px #779074;">Send multipal notification at once</p>
+                    <div class="text-center author">
+                        <a href="https://github.com/getsettalk" target="_blank" class="text-decoration-none">Developed
+                            By: Sujeet Kumar</a>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 formContent">
+                    <div class=" d-flex justify-content-center align-items-center text-center">
+                        <img src="./assets/images/firebase.svg" alt="firebase" class="img-fluid" width="50">
+                        <h4>Firebase Push Notification</h4>
+                    </div>
+                    <form @submit.prevent="submitForm" class="py-2">
+                        <div class="my-1">
+                            <label for="serverKey">Server Key<small>*</small> </label>
+                            <input type="text" class="form-control" v-model="formData.serverKey" name="serverKey"
+                                id="serverKey" placeholder="Firebase Server Key">
+                        </div>
+
+                        <div class="my-1">
+                            <label for="fcmToken"> FCM Registration Token (Device Token)<small>*</small> </label>
+                            <textarea name="fcmToken" id="fcmToken" v-model="formData.fcmToken" class="form-control"
+                                placeholder="Comma Seprated Multipal FCM Token"></textarea>
+                        </div>
+
+                        <div class="my-1">
+                            <label for="title">Notification Title<small>*</small> </label>
+                            <input type="text" class="form-control" id="title" v-model="formData.title" name="title"
+                                placeholder="Notification Title">
+                        </div>
+
+                        <div class="my-1">
+                            <label for="body">Notification Body<small>*</small> </label>
+                            <textarea name="body" rows="5" id="body" v-model="formData.body" class="form-control"
+                                placeholder="Notification Body Content"></textarea>
+                        </div>
+
+                        <!-- more option -->
+                        <div class="accordion my-2" id="moreThings">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        Show More Option
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne"
+                                    data-bs-parent="#moreThings">
+                                    <div class="accordion-body">
+                                        <div>
+                                            <label for="">Add Notification Key in Notification</label>
+                                            <div class="d-flex g-2">
+                                                <input type="radio" name="NotificationKey" id="NotificationKey_radio"
+                                                    value="yes" checked v-model="formData.notificationKey">
+                                                <label for="NotificationKey_radio"
+                                                    style="margin-left: 3px; cursor: pointer;">
+                                                    No
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <input type="radio" name="NotificationKey" id="NotificationKey_radio2"
+                                                    value="no" v-model="formData.notificationKey">
+                                                <label for="NotificationKey_radio2"
+                                                    style="margin-left: 3px; cursor: pointer;">
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="my-1">
+                                            <label for="actionUrl">Click Action URL <small>(optional)</small> </label>
+                                            <input type="text" class="form-control" id="actionUrl" name="actionUrl"
+                                                placeholder="URL to Redirect" v-model="formData.actionUrl">
+                                        </div>
+
+                                        <div class="my-1">
+                                            <label for="IconURL">Icon URL <small>(optional)</small> </label>
+                                            <input type="text" class="form-control" id="IconURL" name="IconURL"
+                                                placeholder="URL of Icon" v-model="formData.IconURL">
+                                        </div>
+
+                                        <div class="my-1">
+                                            <label for="IconURL">Priority <small>(optional)</small> </label>
+                                            <select name="priority" id="priority" v-model="formData.selectedOption"
+                                                class="form-control">
+                                                <option value="high" style="background-color:#11fc67;" selected>High
+                                                </option>
+                                                <option value="default">default</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="my-1">
+                                            <label for="data">Data <small>(optional)</small> </label>
+                                            <textarea name="data" class="form-control"
+                                                placeholder="Must be JSON Object: {'key': 'value'}"
+                                                v-model="formData.data"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="button-61" :disabled="isLoading || isSubmitDisabled">
+                                <span v-if="isLoading">Sending...</span>
+                                <span v-else>Send Push Notification</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Include Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
+    <!-- Include Vue Toast Notification library -->
+    <script src="https://cdn.jsdelivr.net/npm/vue-toast-notification@3"></script>
+    <link href="https://cdn.jsdelivr.net/npm/vue-toast-notification@3/dist/theme-sugar.css" rel="stylesheet">
+    <!-- Initialize the plugin -->
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    formData: {
+                        serverKey: '',
+                        fcmToken: '',
+                        title: '',
+                        body: '',
+                        notificationKey: 'yes',
+                        actionUrl: '',
+                        IconURL: '',
+                        selectedOption: 'high',
+                        data: ''
+                    },
+                    isLoading: false,
+                    isDarkMode: false, // Initial state for dark mode
+                };
+            },
+            computed: {
+                isSubmitDisabled() {
+                    return (
+                        this.formData.serverKey === '' ||
+                        this.formData.fcmToken === '' ||
+                        this.formData.title === '' ||
+                        this.formData.body === ''
+                    );
+                }
+            },
+            methods: {
+                toggleDarkMode() {
+                    this.isDarkMode = !this.isDarkMode;
+                    document.body.classList.toggle('dark', this.isDarkMode);
+                    console.log("Pressed");
+                },
+                async submitForm() {
+                    // console.log(this.isLoading);
+                    this.isLoading = true;
+                    // Create the FCM payload 
+                    const fcmTokens = this.formData.fcmToken.split(',');
+
+                    // const fcmPayload = {
+                    //     to: this.formData.fcmToken, // *** if i used this than we can send only one at a time
+                    // };
+                    //⭐ i've use here registration_ids to send notification on multipal device 
+                    const fcmPayload = {
+                        registration_ids: fcmTokens,
+                    };
+
+                    // Check the value of notificationKey
+                    if (this.formData.notificationKey === 'yes') {
+                        // If notificationKey is 'yes', add the 'notification' property
+                        fcmPayload.notification = {
+                            title: this.formData.title,
+                            body: this.formData.body,
+
+
+                        };
+                    } else {
+                        // If notificationKey is 'no', add the 'data' property
+                        fcmPayload.dataset = {
+                            title: this.formData.title,
+                            body: this.formData.body,
+
+                        };
+                    }
+
+                    // Add optional properties
+                    if (this.formData.actionUrl) {
+                        if (this.formData.notificationKey === 'yes') {
+                            // If notificationKey is 'yes', add 'notification' property
+                            fcmPayload.notification.clickUrl = this.formData.actionUrl;
+                            fcmPayload.notification.priority = this.formData.selectedOption;
+                            fcmPayload.notification.data = this.formData.data;
+
+                        } else {
+                            // If notificationKey is 'no', add 'data' property
+                            fcmPayload.dataset.clickUrl = this.formData.actionUrl;
+                            fcmPayload.dataset.priority = this.formData.selectedOption;
+                            fcmPayload.dataset.data = this.formData.data;
+                        }
+                    }
+
+                    if (this.formData.IconURL) {
+                        if (this.formData.notificationKey === 'yes') {
+                            // If notificationKey is 'yes', add 'notification' property
+                            fcmPayload.notification.icon = this.formData.IconURL;
+                        } else {
+                            // If notificationKey is 'no', add 'data' property
+                            fcmPayload.dataset.icon = this.formData.IconURL;
+                        }
+                    }
+                    // Log the FCM payload
+                    console.log("fcmPayload", fcmPayload);
+
+                    // Now you can send the fcmPayload to your FCM server
+
+                    const response = await fetch('https://fcm.googleapis.com/fcm/send', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': 'Bearer ' + this.formData.serverKey,
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(fcmPayload),
+                    });
+                    console.log(response)
+                    if (response.ok) {
+                        // Handle the response from the FCM server
+                        const data = await response.json();
+                        if (data.success !== 0) {
+                            // Show a success toast message
+                            this.$toast.open({
+                                message: 'Notification sent successfully!',
+                                type: 'success',
+                                position: 'top-right',
+                                duration: 3000, // How long the toast will display (in milliseconds)
+                            });
+                            this.isLoading = false;
+                        } else {
+                            // Show a success toast message
+                            this.$toast.open({
+                                message: "Please Check Console, {multicast}",
+                                type: 'error',
+                                position: 'top-right',
+                                duration: 3000, // How long the toast will display (in milliseconds)
+                            });
+                            this.$toast.open({
+                                message: 'Failed to send notification. Please Provide Valid Credentials ?',
+                                type: 'error',
+                                position: 'top-right',
+                                duration: 3500, // How long the toast will display (in milliseconds)
+                            });
+                            this.isLoading = false;
+                        }
+
+                        this.isLoading = false;
+                        console.log(data);
+
+                    } else {
+                        // Handle the case where the response status code indicates an error
+                        this.$toast.open({
+                            message: 'Failed to send notification. Please try again. check console.log() for more info ?',
+                            type: 'error',
+                            position: 'top-right',
+                            duration: 3000, // How long the toast will display (in milliseconds)
+                        });
+                    }
+
+
+                }
+            },
+        }).use(VueToast.ToastPlugin).mount('#app');
+    </script>
+
+</body>
+
+</html>
