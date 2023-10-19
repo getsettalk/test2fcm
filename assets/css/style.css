@@ -75,7 +75,7 @@ body header .logo .logoText {
   font-weight: 700;
 }
 body .row .heroContent {
-  background-color: #e9c63b;
+  background-color: #ffcc30;
 }
 body .row .heroContent .author a {
   background-color: whitesmoke;
@@ -133,9 +133,9 @@ body .row .formContent small {
 }
 
 .button-61:disabled {
-  background-color: rgba(0, 0, 0, 0.12);
+  background-color: rgba(209, 0, 28, 0.838);
   box-shadow: rgba(0, 0, 0, 0.2) 0 0 0 0, rgba(0, 0, 0, 0.14) 0 0 0 0, rgba(0, 0, 0, 0.12) 0 0 0 0;
-  color: rgba(0, 0, 0, 0.37);
+  color: rgba(207, 203, 203, 0.898);
   cursor: default;
   pointer-events: none;
 }
