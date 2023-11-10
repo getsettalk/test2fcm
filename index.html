@@ -44,7 +44,27 @@
         </header>
         <div class="container-fluid ">
             <div class="row">
-                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 heroContent pb-5">
+                <div v-if="hasDataSaved" class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 heroContent pb-5">
+                    <h2 class="m-0">All Saved Data</h2>
+                    <p>You can load easly all credentials... just click on that !!</p>
+                    <div class="card">
+                        <div class="card-body " id="loadSavedDataInBox">
+                            <div class="showInFormData p-1 rounded my-1 mb-2"
+                                v-for="(notification, index) in notificationData" :key="index"
+                                @click="DisplayInForm(index)">
+                                <div class="d-flex justify-content-between align-items-center ">
+                                    <p class="m-0 text-light fw-bold">{{ notification.title }}</p>
+                                    <p class="m-0 text-light">{{ notification.createdAt }}</p>
+                                </div>
+                                <hr class="m-0">
+                                <p class="m-0 text-muted elips">
+                                    {{ notification.serverKey }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-else class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 heroContent pb-5">
                     <img src="photo.svg" alt="Firebase Fcm" class="img-fluid">
                     <h1 class="m-0">Test Your Firebase Push Notifications</h1>
                     <p class="p-0 m-0">Fully Customization ...</p>
@@ -53,8 +73,9 @@
                         <a href="https://github.com/getsettalk" target="_blank" class="text-decoration-none">Developed
                             By: Sujeet Kumar</a>
                     </div>
-                  
+
                 </div>
+
                 <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 formContent">
                     <div class=" d-flex justify-content-center align-items-center text-center">
                         <img src="./assets/images/firebase.svg" alt="firebase" class="img-fluid" width="50">
@@ -104,7 +125,7 @@
                                                     value="yes" checked v-model="formData.notificationKey">
                                                 <label for="NotificationKey_radio"
                                                     style="margin-left: 3px; cursor: pointer;">
-                                                    No
+                                                    Yes
                                                 </label>
                                             </div>
                                             <div>
@@ -150,12 +171,16 @@
                             </div>
                         </div>
 
-                        <div class="text-center">
+                        <div class="d-flex justify-content-between align-items-center gx-3">
+                            <button @click="saveData" class="btn btn-success" type="button">Save This</button>
+
                             <button type="submit" class="button-61" :disabled="isLoading || isSubmitDisabled">
                                 <span v-if="isLoading">Sending...</span>
                                 <span v-else>Send Push Notification</span>
                                 <img v-if="isLoading" src="./radio.svg" alt="loading" style="width:20px; height: 20px;">
                             </button>
+
+
                         </div>
                     </form>
                 </div>
@@ -189,6 +214,8 @@
                         selectedOption: 'high',
                         data: ''
                     },
+                    notificationData: [],
+                    hasDataSaved: false,
                     isLoading: false,
                     isDarkMode: false, // Initial state for dark mode
                 };
@@ -203,11 +230,45 @@
                     );
                 }
             },
+            mounted() {
+                // Fetch data from localStorage when the app is mounted
+                this.fetchDataFromLocalStorage();
+            },
             methods: {
+                DisplayInForm(index) {
+                    const existingData = JSON.parse(localStorage.getItem('notificationData')) || [];
+
+                    // Check if the index is within the bounds of the existingData array
+                    if (index >= 0 && index < existingData.length) {
+                        // Get the notification object at the specified index
+                        const notification = existingData[index];
+
+                        // Set the formData properties based on the retrieved notification
+                        this.formData.serverKey = notification.serverKey;
+                        this.formData.fcmToken = notification.fcmToken;
+                        this.formData.title = notification.title;
+                        this.$toast.open({
+                            message: 'Data Loaded !!',
+                            type: 'success',
+                            position: 'top-right',
+                            duration: 2000,
+                        })
+                    } else {
+                        console.error('Invalid index or no data available at the specified index.');
+                    }
+                },
+                fetchDataFromLocalStorage() {
+                    const savedData = localStorage.getItem('notificationData');
+                    if (savedData) {
+                        this.hasDataSaved = true;
+                        this.notificationData = JSON.parse(savedData);
+
+                    }
+                },
                 toggleDarkMode() {
                     this.isDarkMode = !this.isDarkMode;
                     document.body.classList.toggle('dark', this.isDarkMode);
-                    console.log("Pressed");
+                    // console.log("Pressed");
                 },
                 async submitForm() {
                     // console.log(this.isLoading);
@@ -309,7 +370,7 @@
                             this.isLoading = false;
                         }
 
-                      
+
                         console.log(data);
 
                     } else {
@@ -324,7 +385,44 @@
                     }
 
 
-                }
+                },
+                saveData() {
+
+                    if (this.formData.serverKey.length > 5) {
+                        if (this.formData.fcmToken.length > 5) {
+                            if (this.formData.title.length > 2) {
+                                // Ensure that notificationData is initialized properly
+                                if (!this.notificationData) {
+                                    this.notificationData = [];
+                                }
+                                // Retrieve existing data from localStorage
+                                const existingData = JSON.parse(localStorage.getItem('notificationData')) || [];
+
+                                // Create a new notification object
+                                const newNotification = {
+                                    serverKey: this.formData.serverKey,
+                                    fcmToken: this.formData.fcmToken,
+                                    title: this.formData.title,
+                                    createdAt: new Date(),
+                                };
+
+                                // Add the new notification to the array
+                                existingData.push(newNotification);
+
+                                // Save the updated array to localStorage
+                                localStorage.setItem('notificationData', JSON.stringify(existingData));
+                                // Fetch data again to update the component's state
+                                this.fetchDataFromLocalStorage();
+                            } else {
+                                alert("Enter Valid Title ?")
+                            }
+                        } else {
+                            alert("Enter Valid FCM Token ?")
+                        }
+                    } else {
+                        alert("Enter Valid Server Key To Saved Data ?")
+                    }
+                },
             },
         }).use(VueToast.ToastPlugin).mount('#app');
     </script>

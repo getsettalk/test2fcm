@@ -90,6 +90,23 @@ body .row .formContent {
 body .row .formContent small {
   color: rgb(255, 94, 0);
 }
+body .showInFormData {
+  background: hsl(173, 89%, 70%);
+  background: linear-gradient(90deg, hsl(173, 89%, 70%) 0%, hsl(196, 68%, 38%) 100%);
+  background: -webkit-linear-gradient(90deg, hsl(173, 89%, 70%) 0%, hsl(196, 68%, 38%) 100%);
+  transition: background-color 0.3s linear;
+}
+body .showInFormData:hover {
+  background: rgb(243, 244, 197);
+  background: linear-gradient(90deg, rgb(243, 244, 197) 0%, rgb(249, 180, 51) 100%);
+  background: -webkit-linear-gradient(90deg, rgb(243, 244, 197) 0%, rgb(249, 180, 51) 100%);
+  cursor: pointer;
+}
+body .elips {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 /* CSS */
 .button-61 {
