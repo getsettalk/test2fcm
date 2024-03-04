@@ -255,6 +255,7 @@
                         this.formData.serverKey = notification.serverKey;
                         this.formData.fcmToken = notification.fcmToken;
                         this.formData.title = notification.title;
+                        this.formData.data = notification.itsdata;
                         this.$toast.open({
                             message: 'Data Loaded !!',
                             type: 'success',
@@ -420,6 +421,7 @@
                                     serverKey: this.formData.serverKey,
                                     fcmToken: this.formData.fcmToken,
                                     title: this.formData.title,
+                                    itsdata: this.formData.data,
                                     createdAt: new Date(),
                                 };
 
