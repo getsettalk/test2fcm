@@ -135,6 +135,11 @@
                                                     style="margin-left: 3px; cursor: pointer;">
                                                     No
                                                 </label>
+                                                <small v-if="formData.notificationKey === 'no'">
+                                                    (When we send Notification without "notification key," I manage all
+                                                    things through the "data" property.)
+                                                </small>
+
                                             </div>
                                         </div>
 
@@ -164,7 +169,8 @@
                                             <label for="data">Data <small>(optional)</small> </label>
                                             <textarea name="data" class="form-control"
                                                 placeholder="Must be JSON Object: {'key': 'value'}"
-                                                v-model="formData.data"></textarea>
+                                                v-model="formData.data">
+                                            </textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -218,6 +224,8 @@
                     hasDataSaved: false,
                     isLoading: false,
                     isDarkMode: false, // Initial state for dark mode
+
+                    defaultDataValue: '{"title":"this is test title","body":"Hello World"}',
                 };
             },
             computed: {
@@ -287,14 +295,17 @@
                     // Check the value of notificationKey
                     if (this.formData.notificationKey === 'yes') {
                         // If notificationKey is 'yes', add the 'notification' property
-                        fcmPayload.notification = {
+                        fcmPayload.notification = {  // Ensure 'android' property exists
                             title: this.formData.title,
                             body: this.formData.body,
-
+                            click_action: this.formData.actionUrl,
+                            priority: this.formData.selectedOption,
+                            icon: this.formData.IconURL,
 
                         };
                     } else {
                         // If notificationKey is 'no', add the 'data' property
+                        //🎇🎆🎃 when we send data without "notification key" i have manage all things through "data" property
                         fcmPayload.dataset = {
                             title: this.formData.title,
                             body: this.formData.body,
@@ -303,30 +314,36 @@
                     }
 
                     // Add optional properties
-                    if (this.formData.actionUrl) {
-                        if (this.formData.notificationKey === 'yes') {
-                            // If notificationKey is 'yes', add 'notification' property
-                            fcmPayload.notification.clickUrl = this.formData.actionUrl;
-                            fcmPayload.notification.priority = this.formData.selectedOption;
-                            fcmPayload.notification.data = this.formData.data;
 
-                        } else {
-                            // If notificationKey is 'no', add 'data' property
-                            fcmPayload.dataset.clickUrl = this.formData.actionUrl;
-                            fcmPayload.dataset.priority = this.formData.selectedOption;
-                            fcmPayload.dataset.data = this.formData.data;
-                        }
+                    /*   if (this.formData.notificationKey === 'yes') {
+                          // If notificationKey is 'yes', add 'notification' property
+                          fcmPayload.notification = {  // Ensure 'android' property exists
+                              title: this.formData.title,
+                              body: this.formData.body,
+                              click_action: this.formData.actionUrl,
+                              priority: this.formData.selectedOption,
+                              icon: this.formData.IconURL,
+  
+                          };
+                      } else {
+                          // If notificationKey is 'no', add 'data' property // its custome
+                          fcmPayload.dataset = {  // Ensure 'android' property exists
+                              title: this.formData.title,
+                              body: this.formData.body,
+                              android: {
+                                  click_action: this.formData.actionUrl,
+                                  priority: this.formData.selectedOption,
+                                  icon: this.formData.IconURL,
+                              }
+                          };
+                      } */
+
+                    if (this.formData.data) {
+                        fcmPayload.data = JSON.parse(this.formData.data);
                     }
 
-                    if (this.formData.IconURL) {
-                        if (this.formData.notificationKey === 'yes') {
-                            // If notificationKey is 'yes', add 'notification' property
-                            fcmPayload.notification.icon = this.formData.IconURL;
-                        } else {
-                            // If notificationKey is 'no', add 'data' property
-                            fcmPayload.dataset.icon = this.formData.IconURL;
-                        }
-                    }
+
+
                     // Log the FCM payload
                     console.log("fcmPayload", fcmPayload);
 
@@ -421,6 +438,22 @@
                         }
                     } else {
                         alert("Enter Valid Server Key To Saved Data ?")
+                    }
+                },
+            },
+            watch: {
+                'formData.notificationKey': function (newVal) {
+                    if (newVal === 'no') {
+                        this.$toast.open({
+                            message: 'Default value has appended.',
+                            type: 'success',
+                            position: 'top-right',
+                            duration: 3000, // How long the toast will display (in milliseconds)
+                        });
+                        this.formData.data = this.defaultDataValue;
+                    } else {
+                        // If notificationKey is not 'no', you may want to clear or set a different default value
+                        this.formData.data = '';
                     }
                 },
             },
