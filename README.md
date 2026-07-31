@@ -22,22 +22,12 @@ straight from your browser — now powered by the modern **FCM HTTP v1 API**.
 <table>
   <tr>
     <td width="50%" align="center">
-      <img src="./assets/images/screenshot-light.png" width="100%" alt="Light mode" /><br/>
+      <img src="https://github.com/user-attachments/assets/f11610ab-b0ef-4df7-930a-79cfb9daff1f" width="100%" alt="Light mode" /><br/>
       <sub><b>Light mode</b></sub>
     </td>
     <td width="50%" align="center">
-      <img src="./assets/images/screenshot-dark.png" width="100%" alt="Dark mode" /><br/>
+      <img src="https://github.com/user-attachments/assets/9a98049f-3e4c-44ed-bb51-70318e58c295" width="100%" alt="Dark mode" /><br/>
       <sub><b>Dark mode (Firebase amber)</b></sub>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" align="center">
-      <img src="./assets/images/screenshot-guide.png" width="100%" alt="Setup guide modal" /><br/>
-      <sub><b>Setup guide — Project ID &amp; access token</b></sub>
-    </td>
-    <td width="50%" align="center">
-      <img src="./assets/images/screenshot-payload.png" width="100%" alt="Live payload preview" /><br/>
-      <sub><b>Live request preview &amp; per-device results</b></sub>
     </td>
   </tr>
 </table>
