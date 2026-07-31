@@ -4,107 +4,552 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test2FCM - Firebase Push Notification for Multiple Device Testing Tool</title>
+    <title>Test2FCM - Firebase Push Notification (HTTP v1) Testing Tool</title>
     <meta name="description"
-        content="Test2FCM is a Firebase push notification testing tool that helps you send custom notifications to multiple devices. Test your notifications with ease.">
+        content="Test2FCM is a Firebase Cloud Messaging (FCM HTTP v1) testing tool. Send notification and data-only push messages to multiple devices using your Project ID and an OAuth 2.0 access token.">
     <meta name="keywords"
-        content="Test2FCM, testfcm, test2fcm,  Firebase, push notification, testing tool, send notifications, custom notifications, fcm, token , fcm token, cloud messagaing, fcm tester, free fcm checker, send notification on android, send notification on ios, react native notification, react-native, RN notify, rn-firebase">
+        content="Test2FCM, testfcm, test2fcm, Firebase, push notification, FCM HTTP v1, v1 api, messages:send, data message, notification testing, fcm token, oauth access token, project id, react native notification, rn-firebase">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Test2FCM - Firebase Push Notification Testing Tool">
+    <meta property="og:title" content="Test2FCM - Firebase Push Notification (HTTP v1) Tool">
     <meta property="og:description"
-        content="Test2FCM is a Firebase push notification testing tool that helps you send custom notifications to multiple devices. Test your notifications with ease.">
-    <!-- Favicon (optional) -->
-    <link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon">
-
-    <!-- Other SEO-related tags (optional) -->
+        content="Send FCM HTTP v1 notification and data-only messages to multiple devices. Now using Project ID + OAuth access token.">
+    <link rel="icon" href="./assets/images/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="./assets/images/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="./assets/images/logo.svg">
     <meta name="author" content="Sujeet Kumar">
     <meta name="robots" content="index, follow">
     <meta name="language" content="English">
-    <meta property="twitter:title" content="Test2FCM - Firebase Push Notification Testing Tool">
+    <meta property="twitter:title" content="Test2FCM - Firebase Push Notification (HTTP v1) Tool">
     <meta property="twitter:description"
-        content="Test2FCM is a Firebase push notification testing tool that helps you send custom notifications to multiple devices. Test your notifications with ease.">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <link rel="stylesheet" href="assets/css/style.css">
+        content="Send FCM HTTP v1 notification and data-only messages to multiple devices.">
     <meta name="google-site-verification" content="FEtTLqedJgQE6KeXLsJuP2v04Ury4R8TTHd6T6TDRyE" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vue-toast-notification@3/dist/theme-sugar.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #eef1f8;
+            --bg-grad-1: #fff4e6;
+            --bg-grad-2: #eef1f8;
+            --surface: #ffffff;
+            --surface-2: #f4f6fb;
+            --surface-3: #eef1f8;
+            --border: #e3e8f2;
+            --border-strong: #d3dae8;
+            --text: #101728;
+            --text-2: #3a4560;
+            --muted: #6b7590;
+            --primary: #ff8f00;
+            --primary-2: #ffb300;
+            --primary-strong: #f57c00;
+            --primary-soft: rgba(255, 143, 0, .12);
+            --accent: #7c5cff;
+            --success: #12a150;
+            --success-soft: rgba(18, 161, 80, .12);
+            --danger: #e5484d;
+            --danger-soft: rgba(229, 72, 77, .12);
+            --ring: rgba(255, 143, 0, .28);
+            --shadow-sm: 0 1px 2px rgba(16, 23, 40, .06), 0 1px 3px rgba(16, 23, 40, .05);
+            --shadow-md: 0 8px 24px rgba(16, 23, 40, .08);
+            --shadow-lg: 0 24px 60px rgba(16, 23, 40, .14);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+        }
+
+        html[data-theme="dark"] {
+            --bg: #16130b;
+            --bg-grad-1: #2a2010;
+            --bg-grad-2: #100d06;
+            --surface: #201b10;
+            --surface-2: #2a2416;
+            --surface-3: #362d1a;
+            --border: #40361f;
+            --border-strong: #524427;
+            --text: #f8f2e2;
+            --text-2: #ddd0b3;
+            --muted: #ab9c78;
+            --primary: #ffca28;
+            --primary-2: #ffdd6b;
+            --primary-strong: #ffb300;
+            --primary-soft: rgba(255, 202, 40, .16);
+            --accent: #ffb74d;
+            --success: #45c97f;
+            --success-soft: rgba(69, 201, 127, .15);
+            --danger: #ff7a5f;
+            --danger-soft: rgba(255, 122, 95, .16);
+            --ring: rgba(255, 202, 40, .34);
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, .5);
+            --shadow-md: 0 12px 30px rgba(0, 0, 0, .52);
+            --shadow-lg: 0 30px 70px rgba(0, 0, 0, .62);
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body { margin: 0; padding: 0; }
+
+        body {
+            font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(1200px 600px at 12% -8%, var(--primary-soft), transparent 60%),
+                linear-gradient(180deg, var(--bg-grad-1), var(--bg-grad-2) 42%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.5;
+        }
+
+        [v-cloak] { display: none; }
+
+        .wrap { max-width: 1240px; margin: 0 auto; padding: 24px 20px 64px; }
+
+        /* Topbar — full viewport width, content aligned to page container */
+        .topbar {
+            position: sticky; top: 0; z-index: 40;
+            background: color-mix(in srgb, var(--bg) 82%, transparent);
+            backdrop-filter: saturate(160%) blur(14px);
+            border-bottom: 1px solid var(--border);
+        }
+        .topbar-inner {
+            max-width: 1240px; margin: 0 auto; padding: 13px 20px;
+            display: flex; align-items: center; justify-content: space-between; gap: 16px;
+        }
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .brand img { width: 38px; height: 38px; border-radius: 10px; }
+        .brand-text { display: flex; flex-direction: column; line-height: 1.05; }
+        .brand-text b { font-size: 18px; font-weight: 800; letter-spacing: -.3px; }
+        .brand-text .badge-v1 {
+            font-size: 11px; font-weight: 700; color: var(--primary-strong);
+            background: var(--primary-soft); padding: 1px 7px; border-radius: 999px;
+            width: max-content; margin-top: 3px; letter-spacing: .3px;
+        }
+        .top-actions { display: flex; align-items: center; gap: 10px; }
+
+        .btn {
+            font-family: inherit; font-size: 14px; font-weight: 600;
+            border: 1px solid var(--border-strong); background: var(--surface);
+            color: var(--text); padding: 10px 16px; border-radius: 11px;
+            cursor: pointer; transition: .16s ease; display: inline-flex;
+            align-items: center; gap: 8px; white-space: nowrap;
+        }
+        .btn:hover { border-color: var(--primary); color: var(--primary-strong); transform: translateY(-1px); }
+        .btn:active { transform: translateY(0); }
+        .btn.ghost { background: transparent; }
+        .btn.icon { padding: 9px; width: 40px; height: 40px; justify-content: center; }
+        .btn.small { padding: 6px 11px; font-size: 12.5px; border-radius: 9px; }
+        .btn.primary {
+            border: 0; color: #241300; font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            box-shadow: 0 8px 22px -8px var(--primary);
+        }
+        .btn.primary:hover { color: #241300; filter: brightness(1.04); transform: translateY(-1px); }
+        .btn.primary:disabled { opacity: .5; cursor: not-allowed; filter: grayscale(.3); transform: none; box-shadow: none; }
+        .btn.success { border: 0; color: #fff; background: var(--success); }
+        .btn.success:hover { color: #fff; filter: brightness(1.05); }
+        .btn.danger-ghost { border-color: transparent; color: var(--muted); }
+        .btn.danger-ghost:hover { color: var(--danger); border-color: var(--danger); }
+
+        /* Layout */
+        .grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; align-items: start; }
+        .grid > * { min-width: 0; }
+        @media (min-width: 1000px) { .grid { grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); } }
+
+        .card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: var(--radius); box-shadow: var(--shadow-sm);
+        }
+        .col-left { display: flex; flex-direction: column; gap: 18px; position: sticky; top: 86px; }
+        @media (max-width: 999px) { .col-left { position: static; } }
+
+        /* Hero */
+        .hero { padding: 26px 24px; overflow: hidden; position: relative; }
+        .hero::after {
+            content: ""; position: absolute; inset: auto -40px -60px auto; width: 220px; height: 220px;
+            background: radial-gradient(circle, var(--primary-soft), transparent 70%); pointer-events: none;
+        }
+        .hero h1 { font-size: 26px; line-height: 1.2; margin: 4px 0 8px; letter-spacing: -.6px; font-weight: 800; }
+        .hero h1 span { background: linear-gradient(120deg, var(--primary-strong), var(--primary-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .hero p { color: var(--text-2); margin: 0 0 16px; font-size: 14.5px; }
+        .feat { display: flex; flex-wrap: wrap; gap: 8px; }
+        .chip {
+            font-size: 12px; font-weight: 600; color: var(--text-2);
+            background: var(--surface-2); border: 1px solid var(--border);
+            padding: 6px 11px; border-radius: 999px; display: inline-flex; align-items: center; gap: 6px;
+        }
+        .chip svg { width: 13px; height: 13px; color: var(--primary); }
+        .migrate {
+            margin-top: 18px; font-size: 12.5px; color: var(--text-2);
+            background: var(--primary-soft); border: 1px dashed color-mix(in srgb, var(--primary) 45%, transparent);
+            padding: 10px 12px; border-radius: 12px; display: flex; gap: 9px; align-items: flex-start;
+        }
+        .migrate b { color: var(--primary-strong); }
+
+        /* Saved lists */
+        .panel { padding: 18px 20px; }
+        .panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .panel-head h3 { margin: 0; font-size: 14px; font-weight: 700; letter-spacing: .2px; display: flex; align-items: center; gap: 8px; }
+        .count-pill { font-size: 11px; font-weight: 700; color: var(--muted); background: var(--surface-2); border: 1px solid var(--border); padding: 1px 8px; border-radius: 999px; }
+        .saved-item {
+            display: flex; align-items: center; gap: 10px; padding: 11px 12px; border-radius: 12px;
+            border: 1px solid var(--border); background: var(--surface-2); cursor: pointer;
+            transition: .15s ease; margin-bottom: 8px;
+        }
+        .saved-item:last-child { margin-bottom: 0; }
+        .saved-item:hover { border-color: var(--primary); background: var(--primary-soft); transform: translateX(2px); }
+        .saved-item .si-body { min-width: 0; flex: 1; }
+        .saved-item .si-title { font-weight: 700; font-size: 13.5px; display: flex; align-items: center; gap: 7px; }
+        .saved-item .si-sub { font-size: 11.5px; color: var(--muted); font-family: var(--mono); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .si-del { opacity: .55; }
+        .saved-item:hover .si-del { opacity: 1; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+        .dot.cred { background: var(--accent); }
+        .dot.tmpl { background: var(--primary); }
+        .empty { font-size: 12.5px; color: var(--muted); padding: 14px 12px; text-align: center; border: 1px dashed var(--border-strong); border-radius: 12px; }
+
+        /* Form */
+        .form { padding: 22px 24px; }
+        .form-head { display: flex; align-items: center; gap: 11px; margin-bottom: 6px; }
+        .form-head img { width: 30px; height: 30px; }
+        .form-head h2 { font-size: 17px; margin: 0; font-weight: 800; letter-spacing: -.3px; }
+        .form-head p { margin: 0; font-size: 12.5px; color: var(--muted); }
+
+        .fset { border: 0; padding: 0; margin: 20px 0 0; }
+        .fset > legend {
+            font-size: 11px; font-weight: 800; letter-spacing: .7px; text-transform: uppercase;
+            color: var(--muted); padding: 0; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; width: 100%;
+        }
+        .fset > legend::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+
+        .field { margin-bottom: 13px; }
+        .field:last-child { margin-bottom: 0; }
+        .lbl { display: flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; color: var(--text-2); margin-bottom: 6px; }
+        .lbl .req { color: var(--danger); }
+        .lbl .opt { color: var(--muted); font-weight: 500; }
+        .help {
+            margin-left: auto; width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--border-strong);
+            background: var(--surface-2); color: var(--muted); font-size: 11px; font-weight: 800; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center; transition: .15s;
+        }
+        .help:hover { color: #fff; background: var(--primary); border-color: var(--primary); }
+
+        input, textarea, select {
+            width: 100%; font-family: inherit; font-size: 14px; color: var(--text);
+            background: var(--surface-2); border: 1px solid var(--border-strong);
+            border-radius: 11px; padding: 11px 13px; transition: .15s ease; outline: none;
+        }
+        textarea { resize: vertical; min-height: 46px; line-height: 1.5; }
+        input::placeholder, textarea::placeholder { color: var(--muted); }
+        input:focus, textarea:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring); background: var(--surface); }
+        input.mono, textarea.mono { font-family: var(--mono); font-size: 12.5px; }
+        select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7590' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; cursor: pointer; }
+        .field-note { font-size: 11.5px; color: var(--muted); margin-top: 5px; }
+        .field-note.err { color: var(--danger); font-weight: 600; }
+        .field-note.ok { color: var(--success); font-weight: 600; }
+
+        .inline { display: flex; gap: 10px; align-items: flex-end; }
+        .inline .field { flex: 1; margin-bottom: 0; }
+
+        /* Segmented control */
+        .seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; background: var(--surface-2); border: 1px solid var(--border-strong); border-radius: 12px; padding: 5px; }
+        .seg label { cursor: pointer; }
+        .seg input { position: absolute; width: 1px; height: 1px; margin: 0; opacity: 0; pointer-events: none; overflow: hidden; }
+        .seg .seg-btn {
+            display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center;
+            padding: 9px 6px; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--text-2);
+            transition: .15s ease;
+        }
+        .seg .seg-btn small { font-size: 10.5px; font-weight: 500; color: var(--muted); }
+        .seg input:checked + .seg-btn { background: var(--surface); color: var(--primary-strong); box-shadow: var(--shadow-sm); }
+        .seg input:checked + .seg-btn small { color: var(--primary-strong); }
+        .seg label:hover .seg-btn { color: var(--text); }
+
+        /* Accordion */
+        .acc { margin-top: 18px; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+        .acc-head { width: 100%; text-align: left; background: var(--surface-2); border: 0; padding: 12px 14px; font-family: inherit; font-size: 13px; font-weight: 700; color: var(--text-2); cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
+        .acc-head:hover { color: var(--text); }
+        .acc-head .caret { transition: transform .2s ease; }
+        .acc-head.open .caret { transform: rotate(180deg); }
+        .acc-body { padding: 14px; border-top: 1px solid var(--border); }
+
+        /* Payload preview */
+        .preview { margin-top: 18px; }
+        .preview-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+        .preview-head .lbl { margin: 0; }
+        pre.code {
+            margin: 0; background: #0b1020; color: #d6e2ff; border: 1px solid var(--border-strong);
+            border-radius: 12px; padding: 14px; font-family: var(--mono); font-size: 12px; line-height: 1.55;
+            overflow-x: auto; max-height: 320px;
+        }
+        html[data-theme="dark"] pre.code { background: #0f0c05; }
+        .endpoint { font-family: var(--mono); font-size: 11.5px; color: var(--muted); word-break: break-all; margin-bottom: 8px; }
+        .endpoint b { color: var(--primary-strong); }
+
+        /* Actions */
+        .actions { display: flex; gap: 12px; margin-top: 22px; }
+        .actions .btn.primary { flex: 1; justify-content: center; padding: 13px; font-size: 15px; }
+        @media (max-width: 560px) { .actions { flex-wrap: wrap; } .actions .btn { flex: 1 1 100%; } }
+        .spinner { width: 16px; height: 16px; border: 2px solid rgba(0,0,0,.25); border-top-color: #241300; border-radius: 50%; animation: spin .7s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Results */
+        .results { margin-top: 18px; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+        .results-top { display: flex; gap: 14px; padding: 14px 16px; background: var(--surface-2); border-bottom: 1px solid var(--border); }
+        .stat { display: flex; flex-direction: column; }
+        .stat b { font-size: 20px; font-weight: 800; line-height: 1; }
+        .stat span { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-top: 3px; }
+        .stat.ok b { color: var(--success); }
+        .stat.bad b { color: var(--danger); }
+        .res-list { max-height: 240px; overflow-y: auto; }
+        .res-row { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; }
+        .res-row:last-child { border-bottom: 0; }
+        .res-badge { font-size: 10.5px; font-weight: 800; padding: 2px 8px; border-radius: 999px; flex: none; }
+        .res-badge.ok { color: var(--success); background: var(--success-soft); }
+        .res-badge.bad { color: var(--danger); background: var(--danger-soft); }
+        .res-token { font-family: var(--mono); color: var(--text-2); }
+        .res-msg { margin-left: auto; color: var(--muted); text-align: right; max-width: 55%; }
+        .res-msg.bad { color: var(--danger); }
+
+        /* Modal */
+        .overlay {
+            position: fixed; inset: 0; z-index: 100; background: rgba(6, 10, 20, .58);
+            backdrop-filter: blur(6px); display: flex; align-items: flex-start; justify-content: center;
+            padding: 5vh 18px; overflow-y: auto; animation: fade .18s ease;
+        }
+        @keyframes fade { from { opacity: 0; } }
+        .modal {
+            width: 100%; max-width: 560px; background: var(--surface); border: 1px solid var(--border);
+            border-radius: 20px; box-shadow: var(--shadow-lg); overflow: hidden; animation: pop .22s cubic-bezier(.2,.9,.3,1.2);
+        }
+        @keyframes pop { from { opacity: 0; transform: translateY(14px) scale(.98); } }
+        .modal-head { display: flex; align-items: center; gap: 12px; padding: 20px 22px; border-bottom: 1px solid var(--border); }
+        .modal-head .mh-ico { width: 40px; height: 40px; border-radius: 12px; background: var(--primary-soft); display: grid; place-items: center; flex: none; }
+        .modal-head .mh-ico svg { width: 22px; height: 22px; color: var(--primary-strong); }
+        .modal-head h2 { margin: 0; font-size: 17px; font-weight: 800; }
+        .modal-head p { margin: 2px 0 0; font-size: 12.5px; color: var(--muted); }
+        .modal-close { margin-left: auto; width: 34px; height: 34px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface-2); color: var(--muted); cursor: pointer; font-size: 18px; line-height: 1; flex: none; }
+        .modal-close:hover { color: var(--danger); border-color: var(--danger); }
+        .modal-body { padding: 20px 22px; }
+
+        .step { border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 14px; background: var(--surface-2); transition: .2s; }
+        .step.hl { border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring); }
+        .step-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+        .step-num { width: 26px; height: 26px; border-radius: 8px; background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: #241300; font-weight: 800; font-size: 13px; display: grid; place-items: center; flex: none; }
+        .step-top b { font-size: 14.5px; }
+        .field-tag { font-family: var(--mono); font-size: 10.5px; font-weight: 600; color: var(--primary-strong); background: var(--primary-soft); padding: 2px 8px; border-radius: 6px; }
+        .step-desc { font-size: 12.5px; color: var(--muted); margin: 0 0 10px; }
+        .step ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+        .step ul li { font-size: 12.5px; line-height: 1.55; color: var(--text-2); position: relative; padding-left: 17px; }
+        .step ul li::before { content: ""; position: absolute; left: 0; top: 7px; width: 6px; height: 6px; border-radius: 50%; background: var(--primary); }
+        .step ul li code { font-family: var(--mono); font-size: 11.5px; background: var(--surface-3); padding: 1px 5px; border-radius: 5px; color: var(--primary-strong); }
+        .cmd { display: flex; align-items: center; gap: 8px; background: #0b1020; border: 1px solid var(--border-strong); border-radius: 9px; padding: 8px 10px; margin: 3px 0; }
+        html[data-theme="dark"] .cmd { background: #0f0c05; }
+        .cmd code { flex: 1; font-family: var(--mono); font-size: 12px; color: #9fe6c0; overflow-x: auto; white-space: nowrap; }
+        .cmd button { flex: none; border: 0; background: var(--surface-3); color: var(--muted); border-radius: 7px; padding: 4px 8px; font-size: 11px; font-weight: 600; cursor: pointer; }
+        .cmd button:hover { color: var(--primary-strong); }
+        .warn { display: flex; gap: 9px; align-items: flex-start; font-size: 12px; color: var(--text-2); background: var(--danger-soft); border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent); border-radius: 10px; padding: 10px 12px; margin-top: 10px; }
+        .warn svg { width: 15px; height: 15px; color: var(--danger); flex: none; margin-top: 1px; }
+        .modal-note { font-size: 12px; color: var(--muted); background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; display: flex; gap: 9px; align-items: flex-start; }
+        .modal-note svg { width: 15px; height: 15px; color: var(--primary); flex: none; margin-top: 1px; }
+        .modal-links { display: flex; gap: 10px; flex-wrap: wrap; padding: 16px 22px; border-top: 1px solid var(--border); background: var(--surface-2); }
+        .modal-links a { font-size: 12.5px; font-weight: 600; color: var(--primary-strong); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+        .modal-links a:hover { text-decoration: underline; }
+
+        .footer { text-align: center; margin-top: 34px; font-size: 12.5px; color: var(--muted); }
+        .footer a { color: var(--primary-strong); text-decoration: none; font-weight: 600; }
+        .footer a:hover { text-decoration: underline; }
+
+        .theme-ico { width: 20px; height: 20px; display: block; color: var(--primary-strong); }
+        .btn.icon.ghost:hover .theme-ico { color: var(--primary-strong); }
+
+        /* Compact toasts (override vue-toast-notification defaults) */
+        .v-toast__item { min-height: 0 !important; padding: 10px 14px !important; margin: 7px 0 !important; border-radius: 12px !important; box-shadow: var(--shadow-md) !important; align-items: center !important; }
+        .v-toast__item .v-toast__text { font-family: inherit !important; font-size: 13px !important; line-height: 1.4 !important; padding: 0 !important; font-weight: 500 !important; }
+        .v-toast__item .v-toast__icon { width: 18px !important; height: 18px !important; min-width: 18px !important; margin-right: 10px !important; background-size: 18px 18px !important; }
+        .v-toast--top .v-toast__item, .v-toast--bottom .v-toast__item { max-width: 340px !important; }
+        @media (max-width: 520px) { .v-toast--top .v-toast__item, .v-toast--bottom .v-toast__item { max-width: calc(100vw - 24px) !important; } }
+    </style>
 </head>
 
-<body :class="{ dark: isDarkMode }">
-    <div id="app">
-        <header class="d-flex justify-content-between align-items-center">
-            <div class="logo">
-                <img src="./assets/images/logo.png" alt="Logo" class="img-fluid" width="50">
-                <span class="logoText">Test2FCM</span>
+<body>
+    <div id="app" v-cloak>
+        <!-- Topbar -->
+        <header class="topbar">
+          <div class="topbar-inner">
+            <div class="brand">
+                <img src="./assets/images/logo.svg" alt="Test2FCM logo">
+                <div class="brand-text">
+                    <b>Test2FCM</b>
+                    <span class="badge-v1">FCM HTTP v1</span>
+                </div>
             </div>
-            <button class="modeBg" @click.prevent="toggleDarkMode">
-                <img :src="isDarkMode ? './assets/images/sun.svg' : './assets/images/moon.svg'" alt="mode"
-                    class="img-fluid">
-            </button>
+            <div class="top-actions">
+                <button class="btn ghost small" @click="openGuide('project')">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12" y2="17"/></svg>
+                    Setup Guide
+                </button>
+                <button class="btn icon ghost" @click="toggleTheme" :title="theme === 'dark' ? 'Light mode' : 'Dark mode'" :aria-label="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'">
+                    <svg v-if="theme === 'dark'" class="theme-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="2" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22" y2="12"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/>
+                    </svg>
+                    <svg v-else class="theme-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
+                    </svg>
+                </button>
+            </div>
+          </div>
         </header>
-        <div class="container-fluid ">
-            <div class="row">
-                <div v-if="hasDataSaved" class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 heroContent pb-5">
-                    <h2 class="m-0">All Saved Data</h2>
-                    <p>You can load easly all credentials... just click on that !!</p>
-                    <div class="card">
-                        <div class="card-body " id="loadSavedDataInBox">
-                            <div class="showInFormData p-1 rounded my-1 mb-2"
-                                v-for="(notification, index) in notificationData" :key="index"
-                                @click="DisplayInForm(index)">
-                                <div class="d-flex justify-content-between align-items-center ">
-                                    <p class="m-0 text-light fw-bold">{{ notification.title }}</p>
-                                    <p class="m-0 text-light">{{ notification.createdAt }}</p>
-                                </div>
-                                <hr class="m-0">
-                                <p class="m-0 text-muted elips">
-                                    {{ notification.serverKey }}
-                                </p>
+
+        <div class="wrap">
+        <div class="grid">
+            <!-- LEFT -->
+            <aside class="col-left">
+                <section class="card hero">
+                    <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>Cloud Messaging Tester</span>
+                    <h1>Test your <span>Firebase</span> push notifications</h1>
+                    <p>Send <b>notification</b> and <b>data-only</b> messages to one or many devices — powered by the modern FCM HTTP&nbsp;v1 API.</p>
+                    <div class="feat">
+                        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Multi-device</span>
+                        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Data messages</span>
+                        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Payload preview</span>
+                        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Save profiles</span>
+                    </div>
+                    <div class="migrate">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex:none;margin-top:1px;color:var(--primary)"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                        <span>The old <b>legacy server-key API</b> was shut down by Google. This tool now uses <b>Project ID + OAuth access token</b>. <a href="#" @click.prevent="openGuide('project')" style="color:var(--primary-strong);font-weight:700">See how →</a></span>
+                    </div>
+                </section>
+
+                <!-- Saved credentials -->
+                <section class="card panel">
+                    <div class="panel-head">
+                        <h3><span class="dot cred"></span>Saved credentials</h3>
+                        <span class="count-pill">{{ credentials.length }}</span>
+                    </div>
+                    <div v-if="credentials.length">
+                        <div v-for="c in credentials" :key="c.id" class="saved-item" @click="loadCredential(c)">
+                            <div class="si-body">
+                                <div class="si-title">{{ c.label }}</div>
+                                <div class="si-sub">Project: {{ c.projectId }} · token …{{ c.accessToken.slice(-6) }}</div>
+                            </div>
+                            <button class="btn icon small danger-ghost si-del" @click.stop="deleteCredential(c.id)" title="Delete">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div v-else class="empty">No saved credentials yet. Fill Project ID + Access Token, then <b>Save profile</b>.</div>
+                </section>
+
+                <!-- Saved templates -->
+                <section class="card panel">
+                    <div class="panel-head">
+                        <h3><span class="dot tmpl"></span>Saved message templates</h3>
+                        <span class="count-pill">{{ templates.length }}</span>
+                    </div>
+                    <div v-if="templates.length">
+                        <div v-for="t in templates" :key="t.id" class="saved-item" @click="loadTemplate(t)">
+                            <div class="si-body">
+                                <div class="si-title">{{ t.label || 'Untitled' }}</div>
+                                <div class="si-sub">{{ t.savedAt }} · {{ typeLabel(t.payload.messageType) }}</div>
+                            </div>
+                            <button class="btn icon small danger-ghost si-del" @click.stop="deleteTemplate(t.id)" title="Delete">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div v-else class="empty">No templates saved. Compose a message and hit <b>Save template</b> to reuse it later.</div>
+                </section>
+            </aside>
+
+            <!-- RIGHT -->
+            <main>
+                <form class="card form" @submit.prevent="send">
+                    <div class="form-head">
+                        <img src="./assets/images/firebase.svg" alt="firebase">
+                        <div>
+                            <h2>Compose push notification</h2>
+                            <p>All fields marked <span style="color:var(--danger)">*</span> are required</p>
+                        </div>
+                    </div>
+
+                    <!-- Credentials -->
+                    <fieldset class="fset">
+                        <legend>Project credentials</legend>
+                        <div class="field">
+                            <label class="lbl">Project ID <span class="req">*</span>
+                                <span class="help" @click="openGuide('project')" title="How to get it">?</span>
+                            </label>
+                            <input type="text" class="mono" v-model.trim="form.projectId" placeholder="my-firebase-project-id" autocomplete="off">
+                        </div>
+                        <div class="field">
+                            <label class="lbl">Access Token (OAuth 2.0) <span class="req">*</span>
+                                <span class="help" @click="openGuide('token')" title="How to get it">?</span>
+                            </label>
+                            <textarea class="mono" rows="2" v-model.trim="form.accessToken" placeholder="ya29.a0Af... (from: gcloud auth print-access-token)"></textarea>
+                            <div class="field-note">This is <b>not</b> a device token. It expires in ~1 hour — regenerate when it stops working.</div>
+                        </div>
+                        <div class="inline">
+                            <div class="field">
+                                <label class="lbl">Profile name <span class="opt">(optional)</span></label>
+                                <input type="text" v-model.trim="credLabel" placeholder="e.g. MyApp — Staging">
+                            </div>
+                            <button type="button" class="btn small" @click="saveCredential" style="margin-bottom:0;height:40px">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
+                                Save profile
+                            </button>
+                        </div>
+                    </fieldset>
+
+                    <!-- Target devices -->
+                    <fieldset class="fset">
+                        <legend>Target devices</legend>
+                        <div class="field">
+                            <label class="lbl">FCM Registration Token(s) <span class="req">*</span></label>
+                            <textarea class="mono" rows="3" v-model="form.tokens" placeholder="Paste one or more device tokens — separated by comma, space or new line"></textarea>
+                            <div class="field-note" :class="{ ok: tokenList.length }">
+                                {{ tokenList.length }} device{{ tokenList.length === 1 ? '' : 's' }} detected · sent as individual v1 requests
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div v-else class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 heroContent pb-5">
-                    <img src="photo.svg" alt="Firebase Fcm" class="img-fluid">
-                    <h1 class="m-0">Test Your Firebase Push Notifications</h1>
-                    <p class="p-0 m-0">Fully Customization ...</p>
-                    <p class="fw-bold" style=" text-shadow: 2px 2px 4px #779074;">Send multipal notification at once</p>
-                    <div class="text-center author">
-                        <a href="https://github.com/getsettalk" target="_blank" class="text-decoration-none">Developed
-                            By: Sujeet Kumar</a>
-                    </div>
+                    </fieldset>
 
-                </div>
-
-                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 formContent">
-                    <div class=" d-flex justify-content-center align-items-center text-center">
-                        <img src="./assets/images/firebase.svg" alt="firebase" class="img-fluid" width="50">
-                        <h4>Firebase Push Notification</h4>
-                    </div>
-                    <form @submit.prevent="submitForm" class="py-2">
-                        <div class="my-1">
-                            <label for="serverKey">Server Key<small>*</small> </label>
-                            <input type="text" class="form-control" v-model="formData.serverKey" name="serverKey"
-                                id="serverKey" placeholder="Firebase Server Key">
+                    <!-- Message -->
+                    <fieldset class="fset">
+                        <legend>Message</legend>
+                        <div class="field">
+                            <label class="lbl">Message type</label>
+                            <div class="seg">
+                                <label @click="form.messageType = 'notification'">
+                                    <input type="radio" value="notification" v-model="form.messageType">
+                                    <div class="seg-btn">Notification<small>title + body</small></div>
+                                </label>
+                                <label @click="form.messageType = 'data'">
+                                    <input type="radio" value="data" v-model="form.messageType">
+                                    <div class="seg-btn">Data-only<small>silent payload</small></div>
+                                </label>
+                                <label @click="form.messageType = 'both'">
+                                    <input type="radio" value="both" v-model="form.messageType">
+                                    <div class="seg-btn">Both<small>notif + data</small></div>
+                                </label>
+                            </div>
+                            <div class="field-note" v-if="form.messageType === 'data'">Data-only messages are delivered silently to the app (handled in code) — no tray notification is shown by the system.</div>
                         </div>
 
-                        <div class="my-1">
-                            <label for="fcmToken"> FCM Registration Token (Device Token)<small>*</small> </label>
-                            <textarea name="fcmToken" id="fcmToken" v-model="formData.fcmToken" class="form-control"
-                                placeholder="Comma Seprated Multipal FCM Token"></textarea>
+                        <div class="field">
+                            <label class="lbl">Title <span class="req" v-if="needsContent">*</span><span class="opt" v-else>(optional)</span></label>
+                            <input type="text" v-model="form.title" placeholder="Notification title">
                         </div>
-
-                        <div class="my-1">
-                            <label for="title">Notification Title<small>*</small> </label>
-                            <input type="text" class="form-control" id="title" v-model="formData.title" name="title"
-                                placeholder="Notification Title">
+                        <div class="field">
+                            <label class="lbl">Body <span class="req" v-if="needsContent">*</span><span class="opt" v-else>(optional)</span></label>
+                            <textarea rows="3" v-model="form.body" placeholder="Notification body content"></textarea>
                         </div>
-
-                        <div class="my-1">
-                            <label for="body">Notification Body<small>*</small> </label>
-                            <textarea name="body" rows="5" id="body" v-model="formData.body" class="form-control"
-                                placeholder="Notification Body Content"></textarea>
+                        <div class="field" v-if="wantsNotification">
+                            <label class="lbl">Image URL <span class="opt">(optional)</span></label>
+                            <input type="text" class="mono" v-model.trim="form.imageUrl" placeholder="https://.../banner.png">
                         </div>
+                    </fieldset>
 
                         <!-- more option -->
                         <div class="accordion my-2" id="moreThings">
@@ -176,48 +621,154 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="d-flex justify-content-between align-items-center gx-3">
-                            <button @click="saveData" class="btn btn-success" type="button">Save This</button>
-
-                            <button type="submit" class="button-61" :disabled="isLoading || isSubmitDisabled">
-                                <span v-if="isLoading">Sending...</span>
-                                <span v-else>Send Push Notification</span>
-                                <img v-if="isLoading" src="./radio.svg" alt="loading" style="width:20px; height: 20px;">
-                            </button>
-
-
+                    <!-- Payload preview -->
+                    <div class="preview">
+                        <div class="preview-head">
+                            <label class="lbl">Request preview <span class="opt" style="margin-left:4px">(first device)</span></label>
+                            <button type="button" class="btn small ghost" @click="copyText(payloadPreview, 'Payload copied')">Copy JSON</button>
                         </div>
-                    </form>
-                </div>
-            </div>
+                        <div class="endpoint">POST <b>{{ endpointDisplay }}</b></div>
+                        <pre class="code">{{ payloadPreview }}</pre>
+                    </div>
 
+                    <!-- Actions -->
+                    <div class="actions">
+                        <button type="button" class="btn" @click="saveTemplate">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
+                            Save template
+                        </button>
+                        <button type="submit" class="btn primary" :disabled="!canSend || isSending">
+                            <span v-if="isSending" class="spinner"></span>
+                            <span v-if="isSending">Sending {{ progress.current }}/{{ progress.total }}…</span>
+                            <span v-else>Send push notification</span>
+                            <svg v-if="!isSending" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                        </button>
+                    </div>
+
+                    <!-- Results -->
+                    <div class="results" v-if="results">
+                        <div class="results-top">
+                            <div class="stat"><b>{{ results.total }}</b><span>Total</span></div>
+                            <div class="stat ok"><b>{{ results.success }}</b><span>Delivered</span></div>
+                            <div class="stat bad"><b>{{ results.failed }}</b><span>Failed</span></div>
+                        </div>
+                        <div class="res-list">
+                            <div class="res-row" v-for="(r, i) in results.details" :key="i">
+                                <span class="res-badge" :class="r.ok ? 'ok' : 'bad'">{{ r.ok ? 'OK' : 'FAIL' }}</span>
+                                <span class="res-token">{{ maskToken(r.token) }}</span>
+                                <span class="res-msg" :class="{ bad: !r.ok }">{{ r.ok ? 'accepted' : r.error }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </main>
         </div>
 
+        <div class="footer">
+            Open source · Developed by <a href="https://github.com/getsettalk" target="_blank" rel="noopener">Sujeet Kumar</a> · Updated to FCM HTTP v1
+        </div>
+        </div><!-- /.wrap -->
+
+        <!-- Setup Guide Modal -->
+        <div class="overlay" v-if="showGuide" @click.self="showGuide = false">
+            <div class="modal">
+                <div class="modal-head">
+                    <div class="mh-ico">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l7 4v6c0 5-3.5 8-7 10-3.5-2-7-5-7-10V6l7-4z"/></svg>
+                    </div>
+                    <div>
+                        <h2>Send with FCM HTTP v1</h2>
+                        <p>You need two things — your Project ID and a short-lived access token.</p>
+                    </div>
+                    <button class="modal-close" @click="showGuide = false">×</button>
+                </div>
+                <div class="modal-body">
+                    <!-- Step 1 -->
+                    <div class="step" :class="{ hl: guideSection === 'project' }">
+                        <div class="step-top">
+                            <span class="step-num">1</span>
+                            <b>Project ID</b>
+                            <span class="field-tag">→ PROJECT ID</span>
+                        </div>
+                        <p class="step-desc">Your Firebase project identifier.</p>
+                        <ul>
+                            <li>Open Firebase Console → select your project.</li>
+                            <li>Click the gear icon → <b>Project settings</b>.</li>
+                            <li>Copy the value under <b>General → Project ID</b>.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="step" :class="{ hl: guideSection === 'token' }">
+                        <div class="step-top">
+                            <span class="step-num">2</span>
+                            <b>Access Token (OAuth 2.0)</b>
+                            <span class="field-tag">→ ACCESS TOKEN</span>
+                        </div>
+                        <p class="step-desc">OAuth 2.0 token from gcloud — <b>not</b> the FCM device token.</p>
+                        <ul>
+                            <li>This is <b>not</b> your FCM registration / device token (never paste <code>APA91…</code> here).</li>
+                            <li>Install the Google Cloud SDK, then run:</li>
+                        </ul>
+                        <div class="cmd"><code>gcloud auth login</code><button type="button" @click="copyText('gcloud auth login', 'Copied')">Copy</button></div>
+                        <div class="cmd"><code>gcloud auth application-default login</code><button type="button" @click="copyText('gcloud auth application-default login', 'Copied')">Copy</button></div>
+                        <div class="cmd"><code>gcloud auth print-access-token</code><button type="button" @click="copyText('gcloud auth print-access-token', 'Copied')">Copy</button></div>
+                        <ul style="margin-top:8px">
+                            <li>Copy the token — it usually starts with <b>ya29…</b> — and paste it into <b>Access Token</b>.</li>
+                        </ul>
+                        <div class="warn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+                            <span><b>Access Token ≠ Device Token.</b> The device token goes in the <b>FCM Registration Token</b> field only.</span>
+                        </div>
+                    </div>
+
+                    <div class="modal-note">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        <span>The access token is short-lived (about <b>1 hour</b>). When sends start failing with <b>401 UNAUTHENTICATED</b>, just run <code>gcloud auth print-access-token</code> again and paste the new one.</span>
+                    </div>
+                </div>
+                <div class="modal-links">
+                    <a href="https://console.firebase.google.com/" target="_blank" rel="noopener">Open Firebase Console ↗</a>
+                    <a href="https://cloud.google.com/sdk/docs/install" target="_blank" rel="noopener">Install gcloud SDK ↗</a>
+                    <a href="https://cloud.google.com/sdk/gcloud/reference/auth/print-access-token" target="_blank" rel="noopener">gcloud token docs ↗</a>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Include Vue.js -->
     <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
-    <!-- Include Vue Toast Notification library -->
     <script src="https://cdn.jsdelivr.net/npm/vue-toast-notification@3"></script>
-    <link href="https://cdn.jsdelivr.net/npm/vue-toast-notification@3/dist/theme-sugar.css" rel="stylesheet">
-    <!-- Initialize the plugin -->
     <script>
         const { createApp } = Vue;
+
+        const LS = { theme: 't2f_theme', creds: 't2f_credentials', tmpl: 't2f_templates' };
 
         createApp({
             data() {
                 return {
-                    formData: {
-                        serverKey: '',
-                        fcmToken: '',
+                    theme: 'light',
+                    showGuide: false,
+                    guideSection: null,
+                    showMore: false,
+                    isSending: false,
+                    progress: { current: 0, total: 0 },
+                    results: null,
+                    credLabel: '',
+                    credentials: [],
+                    templates: [],
+                    form: {
+                        projectId: '',
+                        accessToken: '',
+                        tokens: '',
+                        messageType: 'notification',
                         title: '',
                         body: '',
-                        notificationKey: 'yes',
-                        actionUrl: '',
-                        IconURL: '',
-                        selectedOption: 'high',
+                        imageUrl: '',
+                        link: '',
+                        icon: '',
+                        priority: 'high',
                         data: ''
                     },
                     notificationData: [],
@@ -229,18 +780,62 @@
                 };
             },
             computed: {
-                isSubmitDisabled() {
-                    return (
-                        this.formData.serverKey === '' ||
-                        this.formData.fcmToken === '' ||
-                        this.formData.title === '' ||
-                        this.formData.body === ''
-                    );
+                tokenList() {
+                    return this.form.tokens.split(/[\s,]+/).map(t => t.trim()).filter(Boolean);
+                },
+                wantsNotification() {
+                    return this.form.messageType === 'notification' || this.form.messageType === 'both';
+                },
+                wantsData() {
+                    return this.form.messageType === 'data' || this.form.messageType === 'both';
+                },
+                needsContent() {
+                    return this.wantsNotification;
+                },
+                parsedData() {
+                    const raw = (this.form.data || '').trim();
+                    if (!raw) return null;
+                    try {
+                        const obj = JSON.parse(raw);
+                        if (typeof obj !== 'object' || Array.isArray(obj) || obj === null) {
+                            return { __error: 'Data must be a JSON object, e.g. {"key":"value"}' };
+                        }
+                        return obj;
+                    } catch (e) {
+                        return { __error: 'Invalid JSON — ' + e.message };
+                    }
+                },
+                dataError() {
+                    return this.parsedData && this.parsedData.__error ? this.parsedData.__error : '';
+                },
+                endpointDisplay() {
+                    const pid = this.form.projectId || '{project-id}';
+                    return 'https://fcm.googleapis.com/v1/projects/' + pid + '/messages:send';
+                },
+                canSend() {
+                    if (!this.form.projectId.trim() || !this.form.accessToken.trim()) return false;
+                    if (!this.tokenList.length) return false;
+                    if (this.dataError) return false;
+                    if (this.needsContent && (!this.form.title.trim() || !this.form.body.trim())) return false;
+                    if (this.form.messageType === 'data' && !this.form.title.trim() && !this.form.body.trim() && !this.parsedData) return false;
+                    return true;
+                },
+                payloadPreview() {
+                    const sample = this.tokenList[0] || 'DEVICE_REGISTRATION_TOKEN';
+                    return JSON.stringify(this.buildMessage(sample), null, 2);
                 }
             },
             mounted() {
-                // Fetch data from localStorage when the app is mounted
-                this.fetchDataFromLocalStorage();
+                // Theme
+                const savedTheme = localStorage.getItem(LS.theme);
+                this.theme = savedTheme === 'dark' ? 'dark' : (savedTheme === 'light' ? 'light'
+                    : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+                this.applyTheme();
+                // Saved data
+                try { this.credentials = JSON.parse(localStorage.getItem(LS.creds)) || []; } catch (e) { this.credentials = []; }
+                try { this.templates = JSON.parse(localStorage.getItem(LS.tmpl)) || []; } catch (e) { this.templates = []; }
+                // Migrate old legacy saves (best-effort, non-destructive)
+                this.migrateLegacy();
             },
             methods: {
                 DisplayInForm(index) {
@@ -266,18 +861,11 @@
                         console.error('Invalid index or no data available at the specified index.');
                     }
                 },
-                fetchDataFromLocalStorage() {
-                    const savedData = localStorage.getItem('notificationData');
-                    if (savedData) {
-                        this.hasDataSaved = true;
-                        this.notificationData = JSON.parse(savedData);
-
-                    }
+                uid() {
+                    return 'id-' + Date.now().toString(36) + '-' + Math.floor(Math.random() * 1e6).toString(36);
                 },
-                toggleDarkMode() {
-                    this.isDarkMode = !this.isDarkMode;
-                    document.body.classList.toggle('dark', this.isDarkMode);
-                    // console.log("Pressed");
+                applyTheme() {
+                    document.documentElement.setAttribute('data-theme', this.theme);
                 },
                 async submitForm() {
                     // console.log(this.isLoading);
@@ -311,7 +899,14 @@
                             title: this.formData.title,
                             body: this.formData.body,
 
-                        };
+                // ---- Build the FCM HTTP v1 message ----
+                buildMessage(token) {
+                    const f = this.form;
+                    const message = { token: token };
+
+                    if (this.wantsNotification) {
+                        message.notification = { title: f.title, body: f.body };
+                        if (f.imageUrl) message.notification.image = f.imageUrl;
                     }
 
                     // Add optional properties
@@ -342,6 +937,14 @@
                     if (this.formData.data) {
                         fcmPayload.data = JSON.parse(this.formData.data);
                     }
+                    const custom = this.parsedData;
+                    if (custom && !custom.__error) {
+                        Object.keys(custom).forEach((k) => {
+                            const v = custom[k];
+                            data[k] = (typeof v === 'string') ? v : JSON.stringify(v);
+                        });
+                    }
+                    if (Object.keys(data).length) message.data = data;
 
 
 
@@ -388,20 +991,36 @@
                             this.isLoading = false;
                         }
 
+                    return { message: message };
+                },
 
-                        console.log(data);
+                async send() {
+                    if (this.dataError) { this.toast(this.dataError, 'error'); return; }
+                    if (!this.canSend) { this.toast('Please fill all required fields', 'warning'); return; }
 
-                    } else {
-                        // Handle the case where the response status code indicates an error
-                        this.$toast.open({
-                            message: 'Failed to send notification. Please try again. check console.log() for more info ?',
-                            type: 'error',
-                            position: 'top-right',
-                            duration: 3000, // How long the toast will display (in milliseconds)
-                        });
-                        this.isLoading = false;
-                    }
+                    this.isSending = true;
+                    this.results = null;
+                    const tokens = this.tokenList;
+                    this.progress = { current: 0, total: tokens.length };
+                    const endpoint = 'https://fcm.googleapis.com/v1/projects/' + this.form.projectId.trim() + '/messages:send';
+                    const authToken = this.form.accessToken.trim();
+                    const out = { total: tokens.length, success: 0, failed: 0, details: [] };
+                    let sawAuthError = false;
 
+                    for (let i = 0; i < tokens.length; i++) {
+                        const token = tokens[i];
+                        this.progress.current = i + 1;
+                        try {
+                            const res = await fetch(endpoint, {
+                                method: 'POST',
+                                headers: {
+                                    'Authorization': 'Bearer ' + authToken,
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(this.buildMessage(token))
+                            });
+                            let json = {};
+                            try { json = await res.json(); } catch (e) { json = {}; }
 
                 },
                 saveData() {
@@ -433,13 +1052,33 @@
                                 // Fetch data again to update the component's state
                                 this.fetchDataFromLocalStorage();
                             } else {
-                                alert("Enter Valid Title ?")
+                                out.failed++;
+                                if (res.status === 401 || res.status === 403) sawAuthError = true;
+                                const em = (json && json.error && json.error.message)
+                                    ? json.error.message
+                                    : (res.status + ' ' + res.statusText);
+                                out.details.push({ token: token, ok: false, status: res.status, error: em });
+                                console.error('FCM v1 error for token', token, json);
                             }
-                        } else {
-                            alert("Enter Valid FCM Token ?")
+                        } catch (e) {
+                            out.failed++;
+                            out.details.push({ token: token, ok: false, error: 'Network/CORS error — ' + e.message });
+                            console.error('Network error for token', token, e);
                         }
+                    }
+
+                    this.results = out;
+                    this.isSending = false;
+
+                    if (out.success && !out.failed) {
+                        this.toast('Sent to all ' + out.success + ' device(s)!', 'success');
+                    } else if (out.success && out.failed) {
+                        this.toast(out.success + ' sent · ' + out.failed + ' failed — see details below', 'warning');
                     } else {
-                        alert("Enter Valid Server Key To Saved Data ?")
+                        this.toast('Failed to send. See details below.', 'error');
+                    }
+                    if (sawAuthError) {
+                        this.toast('Access token invalid/expired — run: gcloud auth print-access-token', 'error');
                     }
                 },
             },
@@ -461,7 +1100,6 @@
             },
         }).use(VueToast.ToastPlugin).mount('#app');
     </script>
-
 </body>
 
 </html>
