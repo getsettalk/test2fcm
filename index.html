@@ -154,7 +154,8 @@
         .btn.danger-ghost:hover { color: var(--danger); border-color: var(--danger); }
 
         /* Layout */
-        .grid { display: grid; grid-template-columns: 1fr; gap: 22px; align-items: start; }
+        .grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; align-items: start; }
+        .grid > * { min-width: 0; }
         @media (min-width: 1000px) { .grid { grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); } }
 
         .card {
@@ -255,7 +256,7 @@
         /* Segmented control */
         .seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; background: var(--surface-2); border: 1px solid var(--border-strong); border-radius: 12px; padding: 5px; }
         .seg label { cursor: pointer; }
-        .seg input { position: absolute; opacity: 0; pointer-events: none; }
+        .seg input { position: absolute; width: 1px; height: 1px; margin: 0; opacity: 0; pointer-events: none; overflow: hidden; }
         .seg .seg-btn {
             display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center;
             padding: 9px 6px; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--text-2);
@@ -290,6 +291,7 @@
         /* Actions */
         .actions { display: flex; gap: 12px; margin-top: 22px; }
         .actions .btn.primary { flex: 1; justify-content: center; padding: 13px; font-size: 15px; }
+        @media (max-width: 560px) { .actions { flex-wrap: wrap; } .actions .btn { flex: 1 1 100%; } }
         .spinner { width: 16px; height: 16px; border: 2px solid rgba(0,0,0,.25); border-top-color: #241300; border-radius: 50%; animation: spin .7s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
